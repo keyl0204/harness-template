@@ -135,27 +135,37 @@ build:
 cd D:\codeProject\ai\harness-template
 git add .
 git commit -m "update harness template"
-git tag v0.1.0
+git tag v0.2.1
 ```
 
 推送远程：
 
 ```powershell
 git push -u origin main
-git push origin v0.1.0
+git push origin v0.2.1
 ```
 
 如果 GitHub 拒绝推送 `.github/workflows/ci.yml.jinja`，说明当前 token 缺少 `workflow` scope。需要使用包含 `repo` 和 `workflow` 权限的 Personal Access Token。
 
-## 从 Git 版本生成项目
+## 从 Git 生成项目
 
-模板推送到 Git 后，推荐使用 tag 固定模板版本：
+模板推送到 Git 后，日常推荐不写 `--vcs-ref`，让 Copier 自动使用最新稳定 tag：
 
 ```powershell
-uvx copier copy --trust --vcs-ref v0.1.0 `
+uvx copier copy --trust `
   https://github.com/keyl0204/harness-template.git `
   D:\codeProject\ai\harness-project
 ```
+
+如果需要可复现生成，再锁定指定版本：
+
+```powershell
+uvx copier copy --trust --vcs-ref v0.2.1 `
+  https://github.com/keyl0204/harness-template.git `
+  D:\codeProject\ai\harness-project
+```
+
+版本 tag 建议保持语义版本格式，例如 `v0.2.1`、`v0.2.2`、`v0.3.0`。
 
 如果模板目录已经是 Git 仓库并且存在 tag，Copier 默认可能会使用最新 tag，而不是未提交的工作区内容。验证本地最新提交时可以加：
 

@@ -53,7 +53,7 @@ scripts/check.sh
 因此我们要做一个 **Copier 模板仓库**，让新项目通过命令生成：
 
 ```bash
-copier copy git@github.com:your-org/harness-template.git my-project
+copier copy https://github.com/keyl0204/harness-template.git my-project
 ```
 
 或者后续封装成自己的 CLI：
@@ -102,7 +102,7 @@ Copier 适合这个场景的原因：
 ### 3.1 新建项目
 
 ```bash
-copier copy git@github.com:your-org/harness-template.git my-project \
+copier copy https://github.com/keyl0204/harness-template.git my-project \
   -d project_name="my-project" \
   -d project_type="fastapi-react" \
   -d package_manager="uv" \
@@ -1480,21 +1480,27 @@ git commit -m "init from harness template"
 cd harness-template
 git add .
 git commit -m "init harness copier template"
-git tag v0.1.0
+git tag v0.2.1
 ```
 
 推送：
 
 ```bash
-git remote add origin git@github.com:your-org/harness-template.git
+git remote add origin https://github.com/keyl0204/harness-template.git
 git push -u origin main
-git push origin v0.1.0
+git push origin v0.2.1
 ```
 
-推荐生成项目时指定版本：
+日常推荐不写 `--vcs-ref`，让 Copier 自动使用最新稳定 tag：
 
 ```bash
-copier copy --vcs-ref v0.1.0 git@github.com:your-org/harness-template.git my-project
+copier copy https://github.com/keyl0204/harness-template.git my-project
+```
+
+如果需要可复现生成，再锁定指定版本：
+
+```bash
+copier copy --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git my-project
 ```
 
 ---
@@ -1601,7 +1607,7 @@ import typer
 
 app = typer.Typer(help="Generate Harness + Subagents + Skills project scaffold.")
 
-DEFAULT_TEMPLATE = "git@github.com:your-org/harness-template.git"
+DEFAULT_TEMPLATE = "https://github.com/keyl0204/harness-template.git"
 
 
 @app.command()
@@ -1690,7 +1696,7 @@ harness-init update .
 ```bash
 git checkout -b chore/adopt-harness
 
-copier copy git@github.com:your-org/harness-template.git . \
+copier copy https://github.com/keyl0204/harness-template.git . \
   -d project_name="current-project" \
   -d project_type="fastapi-react"
 ```
@@ -1716,7 +1722,7 @@ copier copy git@github.com:your-org/harness-template.git . \
 命令：
 
 ```bash
-copier copy git@github.com:your-org/harness-template.git /tmp/harness-adopt \
+copier copy https://github.com/keyl0204/harness-template.git /tmp/harness-adopt \
   -d project_name="current-project" \
   -d project_type="fastapi-react"
 
@@ -1731,7 +1737,7 @@ cp /tmp/harness-adopt/AGENTS.md .
 推荐语义版本：
 
 ```text
-v0.1.0：基础 Harness
+v0.2.1：当前基础 Harness
 v0.2.0：增加 Skills
 v0.3.0：增加 CI
 v0.4.0：增加 security reviewer
@@ -1826,17 +1832,17 @@ decisions
 copier copy ./harness-template ./demo-project
 ```
 
-### 第 6 天：发布 v0.1.0
+### 第 6 天：发布 v0.2.1
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
 ### 第 7 天：接入真实项目试用
 
 ```bash
-copier copy git@github.com:your-org/harness-template.git my-real-project
+copier copy https://github.com/keyl0204/harness-template.git my-real-project
 ```
 
 ---
@@ -1952,7 +1958,7 @@ docs/ 管项目是什么。
 
 ```text
 不要所有项目都跟 main。
-建议使用 --vcs-ref v0.1.0。
+日常可以不写 --vcs-ref，让 Copier 自动使用最新稳定 tag；需要可复现时再使用 --vcs-ref v0.2.1。
 ```
 
 ### 20.5 更新旧项目前先开分支
@@ -2029,7 +2035,7 @@ make check
 ### 必须支持的 Copier 命令
 
 ```bash
-copier copy git@github.com:your-org/harness-template.git my-project
+copier copy https://github.com/keyl0204/harness-template.git my-project
 copier check-update
 copier update
 ```

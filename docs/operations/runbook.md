@@ -114,22 +114,30 @@ cd D:\codeProject\ai\harness-template
 git init
 git add .
 git commit -m "init harness copier template"
-git tag v0.1.0
+git tag v0.2.1
 ```
 
 推送远程仓库：
 
 ```powershell
-git remote add origin <你的远程仓库地址>
+git remote add origin https://github.com/keyl0204/harness-template.git
 git push -u origin main
-git push origin v0.1.0
+git push origin v0.2.1
 ```
 
-之后新项目可以从固定版本生成：
+之后新项目可以使用最新稳定 tag 生成。日常推荐不写 `--vcs-ref`，让 Copier 自动选择最新 tag：
 
 ```powershell
-uvx copier copy --trust --vcs-ref v0.1.0 <你的远程仓库地址> my-project
+uvx copier copy --trust https://github.com/keyl0204/harness-template.git my-project
 ```
+
+如果需要可复现生成，再锁定指定版本：
+
+```powershell
+uvx copier copy --trust --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git my-project
+```
+
+版本 tag 建议保持语义版本格式，例如 `v0.2.1`、`v0.2.2`、`v0.3.0`。
 
 ## 旧项目升级模板
 
