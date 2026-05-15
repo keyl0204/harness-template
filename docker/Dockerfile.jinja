@@ -1,0 +1,34 @@
+{% if use_docker %}
+FROM python:{{ python_version }}-slim
+
+WORKDIR /app
+
+{% if package_manager == "uv" %}
+COPY pyproject.toml ./
+COPY src ./src
+
+RUN pip install --no-cache-dir uv && uv sync --no-dev
+{% elif package_manager == "pip" %}
+COPY requirements.txt ./
+COPY src ./src
+
+RUN pip install --no-cache-dir -r requirements.txt
+{% elif package_manager == "poetry" %}
+COPY pyproject.toml poetry.lock* ./
+COPY src ./src
+
+RUN pip install --no-cache-dir poetry && poetry install --only main --no-interaction
+{% else %}
+COPY src ./src
+{% endif %}
+
+EXPOSE 8000
+
+{% if package_manager == "uv" %}
+CMD ["uv", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+{% elif package_manager == "poetry" %}
+CMD ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+{% else %}
+CMD ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+{% endif %}
+{% endif %}

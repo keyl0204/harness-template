@@ -1,0 +1,11 @@
+{% if use_docker %}
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=local
+{% endif %}

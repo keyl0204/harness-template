@@ -1,0 +1,128 @@
+_min_copier_version: "9.0.0"
+
+_envops:
+  trim_blocks: true
+  lstrip_blocks: true
+  keep_trailing_newline: true
+
+project_name:
+  type: str
+  help: 项目名称，例如 ai-article、water-delivery
+  default: my-project
+
+project_slug:
+  type: str
+  help: 项目目录名
+  default: "{{ project_name|lower|replace(' ', '-')|replace('_', '-') }}"
+
+project_description:
+  type: str
+  help: 项目描述
+  default: "A project with Harness + Subagents + Skills scaffold."
+
+project_type:
+  type: str
+  help: 项目类型
+  choices:
+    - python
+    - fastapi
+    - fastapi-react
+    - react
+    - rag
+    - langgraph
+  default: fastapi-react
+
+package_manager:
+  type: str
+  help: Python 包管理器
+  choices:
+    - uv
+    - pip
+    - poetry
+    - none
+  default: uv
+
+frontend_package_manager:
+  type: str
+  help: 前端包管理器
+  choices:
+    - pnpm
+    - npm
+    - yarn
+    - none
+  default: pnpm
+
+use_subagents:
+  type: bool
+  help: 是否生成子 Agent 角色协议
+  default: true
+
+use_skills:
+  type: bool
+  help: 是否生成 Skills 管理目录
+  default: true
+
+use_security_rules:
+  type: bool
+  help: 是否生成安全规则和安全审查 Agent
+  default: true
+
+use_ci:
+  type: bool
+  help: 是否生成 GitHub Actions CI
+  default: false
+
+use_docker:
+  type: bool
+  help: 是否生成 Dockerfile 和 docker-compose 示例
+  default: false
+
+harness_level:
+  type: str
+  help: Harness 成熟度等级
+  choices:
+    - L1
+    - L2
+    - L3
+  default: L2
+
+author_name:
+  type: str
+  help: 作者名称
+  default: kyle
+
+python_version:
+  type: str
+  help: Python 版本
+  default: "3.12"
+
+node_version:
+  type: str
+  help: Node.js 版本
+  default: "22"
+
+_exclude:
+  - ".git"
+  - ".render-*"
+  - "copier.yml"
+  - "__pycache__"
+  - "*.pyc"
+  - ".DS_Store"
+  - "{% if package_manager != 'pip' %}requirements.txt{% else %}__never_match__{% endif %}"
+  - "{% if not use_subagents %}.harness/agents{% else %}__never_match__{% endif %}"
+  - "{% if not use_subagents %}.harness/agents/**{% else %}__never_match__{% endif %}"
+  - "{% if not use_skills %}.harness/skills{% else %}__never_match__{% endif %}"
+  - "{% if not use_skills %}.harness/skills/**{% else %}__never_match__{% endif %}"
+  - "{% if not use_security_rules %}.harness/agents/security_reviewer.md{% else %}__never_match__{% endif %}"
+  - "{% if not use_security_rules %}.harness/rules/security-rules.md{% else %}__never_match__{% endif %}"
+  - "{% if not use_security_rules %}.harness/skills/security-review/SKILL.md{% else %}__never_match__{% endif %}"
+  - "{% if not use_security_rules %}.harness/workflows/security-fix.md{% else %}__never_match__{% endif %}"
+  - "{% if not use_ci %}.github{% else %}__never_match__{% endif %}"
+  - "{% if not use_ci %}.github/**{% else %}__never_match__{% endif %}"
+  - "{% if not use_docker %}docker{% else %}__never_match__{% endif %}"
+  - "{% if not use_docker %}docker/**{% else %}__never_match__{% endif %}"
+  - "/task_plan.md"
+  - "/findings.md"
+  - "/progress.md"
+  - "copier_harness_landing_plan.md"
+  - "harness工程+子agent项目工程建设指导方案.md"

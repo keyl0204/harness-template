@@ -1,0 +1,32 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+## 项目类型
+
+`{{ project_type }}`
+
+## 快速开始
+
+```bash
+make setup
+make dev
+```
+
+## Harness
+
+本项目内置 Harness + 子 Agent + Skills 工程结构：
+
+- `AGENTS.md`：Codex 入口和文档路由地图
+- `.harness/agents/`：子 Agent 角色协议
+- `.harness/skills/`：可复用任务技能
+- `.harness/workflows/`：标准任务工作流
+- `.harness/rules/`：AI 工程协作规则
+- `.harness/state/`：任务状态和交接记录
+- `docs/`：产品、领域、架构、运维和 ADR 文档
+
+## 验证
+
+```bash
+make check
+```

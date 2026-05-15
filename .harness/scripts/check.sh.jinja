@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{% if project_type == "fastapi-react" %}
+make backend-check
+make frontend-check
+{% elif project_type == "react" %}
+make frontend-check
+{% elif project_type in ["python", "fastapi", "rag", "langgraph"] %}
+make backend-check
+{% else %}
+echo "No check command configured for {{ project_type }}"
+{% endif %}

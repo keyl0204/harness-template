@@ -1,0 +1,42 @@
+{% if use_ci %}
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% if package_manager == "uv" %}
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "{{ python_version }}"
+      - run: uv sync
+{% elif package_manager == "poetry" %}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "{{ python_version }}"
+      - run: pipx install poetry
+      - run: poetry install
+{% elif package_manager == "pip" %}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "{{ python_version }}"
+      - run: pip install -r requirements.txt
+{% endif %}
+{% endif %}
+{% if project_type in ["react", "fastapi-react"] and frontend_package_manager != "none" %}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "{{ node_version }}"
+          cache: "{{ frontend_package_manager }}"
+      - run: {{ frontend_package_manager }} install
+{% endif %}
+      - run: make check
+{% endif %}

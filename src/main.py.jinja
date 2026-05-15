@@ -1,0 +1,13 @@
+{% if project_type in ["fastapi", "fastapi-react", "rag", "langgraph"] %}
+from fastapi import FastAPI
+
+app = FastAPI(title="{{ project_name }}")
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+{% else %}
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+{% endif %}

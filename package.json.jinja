@@ -1,0 +1,41 @@
+{
+  "name": "{{ project_slug }}",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+{% if project_type in ["react", "fastapi-react"] %}
+    "dev": "vite",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "build": "vite build",
+    "check": "{{ frontend_package_manager }} run lint && {{ frontend_package_manager }} run typecheck && {{ frontend_package_manager }} run test && {{ frontend_package_manager }} run build"
+{% else %}
+    "dev": "echo 未配置前端",
+    "lint": "echo 未配置前端",
+    "typecheck": "echo 未配置前端",
+    "test": "echo 未配置前端",
+    "build": "echo 未配置前端",
+    "check": "echo 未配置前端"
+{% endif %}
+  },
+  "dependencies": {
+{% if project_type in ["react", "fastapi-react"] %}
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^7.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+{% endif %}
+  },
+  "devDependencies": {
+{% if project_type in ["react", "fastapi-react"] %}
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+{% endif %}
+  }
+}
