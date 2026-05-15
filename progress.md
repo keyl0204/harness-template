@@ -16,3 +16,6 @@
 - Moved Docker templates into `docker/` and updated compose build config to use `context: ..` with `dockerfile: docker/Dockerfile`.
 - Converted generated project documentation and Harness markdown content to Simplified Chinese.
 - Re-ran default and Docker-enabled Copier render checks; removed temporary render directories.
+- Added Copier local generation, overwrite, Git release and update commands to `README.md.jinja` and `docs/operations/runbook.md`.
+- Documented the missing positional arguments error and the local Git tag/ref behavior.
+- Verified the new documentation by rendering from a temporary non-Git template source, then removed temporary render directories.
