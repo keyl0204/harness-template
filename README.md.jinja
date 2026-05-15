@@ -13,12 +13,12 @@ make setup
 make dev
 ```
 
-## 从模板生成项目
+## 从模板生成到当前文件夹
 
-本项目由 Harness Copier 模板生成。使用本地模板验证时，命令必须包含两个位置参数：
+本项目由 Harness Copier 模板生成。生成到当前文件夹时，命令仍然必须包含两个位置参数：
 
 ```text
-copier copy [选项] 模板路径 目标项目路径
+copier copy [选项] 模板源 目标目录
 ```
 
 PowerShell 示例：
@@ -30,8 +30,8 @@ uvx copier copy --trust --defaults `
   -d package_manager={{ package_manager }} `
   -d frontend_package_manager={{ frontend_package_manager }} `
   -d use_docker={{ use_docker | lower }} `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\{{ project_slug }}
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
 如果目标目录已存在并且确认要覆盖测试，增加 `--force`：
@@ -43,11 +43,11 @@ uvx copier copy --trust --defaults --force `
   -d package_manager={{ package_manager }} `
   -d frontend_package_manager={{ frontend_package_manager }} `
   -d use_docker={{ use_docker | lower }} `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\{{ project_slug }}
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
-PowerShell 每行末尾的反引号后面不能有空格。缺少最后两个路径参数时，Copier 会报 `Expected at least 2 positional arguments`。
+PowerShell 每行末尾的反引号后面不能有空格。缺少模板源和目标目录时，Copier 会报 `Expected at least 2 positional arguments`。
 
 如果模板目录已经是 Git 仓库并且存在 tag，Copier 默认可能会使用最新 tag。验证本地最新提交时可以加：
 

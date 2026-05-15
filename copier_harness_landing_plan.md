@@ -53,7 +53,9 @@ scripts/check.sh
 因此我们要做一个 **Copier 模板仓库**，让新项目通过命令生成：
 
 ```bash
-copier copy https://github.com/keyl0204/harness-template.git my-project
+mkdir my-project
+cd my-project
+copier copy https://github.com/keyl0204/harness-template.git .
 ```
 
 或者后续封装成自己的 CLI：
@@ -102,7 +104,9 @@ Copier 适合这个场景的原因：
 ### 3.1 新建项目
 
 ```bash
-copier copy https://github.com/keyl0204/harness-template.git my-project \
+mkdir my-project
+cd my-project
+copier copy https://github.com/keyl0204/harness-template.git . \
   -d project_name="my-project" \
   -d project_type="fastapi-react" \
   -d package_manager="uv" \
@@ -1494,13 +1498,15 @@ git push origin v0.2.1
 日常推荐不写 `--vcs-ref`，让 Copier 自动使用最新稳定 tag：
 
 ```bash
-copier copy https://github.com/keyl0204/harness-template.git my-project
+mkdir my-project
+cd my-project
+copier copy https://github.com/keyl0204/harness-template.git .
 ```
 
 如果需要可复现生成，再锁定指定版本：
 
 ```bash
-copier copy --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git my-project
+copier copy --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git .
 ```
 
 ---
@@ -1842,7 +1848,9 @@ git push origin v0.2.1
 ### 第 7 天：接入真实项目试用
 
 ```bash
-copier copy https://github.com/keyl0204/harness-template.git my-real-project
+mkdir my-real-project
+cd my-real-project
+copier copy https://github.com/keyl0204/harness-template.git .
 ```
 
 ---
@@ -2035,7 +2043,9 @@ make check
 ### 必须支持的 Copier 命令
 
 ```bash
-copier copy https://github.com/keyl0204/harness-template.git my-project
+mkdir my-project
+cd my-project
+copier copy https://github.com/keyl0204/harness-template.git .
 copier check-update
 copier update
 ```

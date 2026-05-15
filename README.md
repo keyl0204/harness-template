@@ -38,26 +38,31 @@
 - `use_ci`：是否生成 GitHub Actions CI
 - `use_docker`：是否生成 `docker/` 目录下的 Dockerfile 和 compose 示例
 
-## 本地生成项目
+## 生成到当前文件夹
 
 PowerShell 示例：
 
 ```powershell
+mkdir D:\codeProject\ai\harness-project
+cd D:\codeProject\ai\harness-project
+
 uvx copier copy --trust --defaults `
   -d project_name=harness-project `
   -d project_type=fastapi-react `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\harness-project
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
-注意：命令最后必须有两个位置参数：
+注意：Copier 仍然要求两个位置参数：
 
 ```text
-模板路径 目标项目路径
+模板源 目标目录
 ```
+
+这里的模板源是 `https://github.com/keyl0204/harness-template.git`，目标目录是 `.`，表示当前文件夹。
 
 如果缺少这两个参数，Copier 会报：
 
@@ -74,8 +79,8 @@ uvx copier copy --trust --defaults --force `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\harness-project
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
 PowerShell 每行末尾的反引号 `` ` `` 后面不能有空格。
@@ -154,7 +159,7 @@ git push origin v0.2.1
 ```powershell
 uvx copier copy --trust `
   https://github.com/keyl0204/harness-template.git `
-  D:\codeProject\ai\harness-project
+  .
 ```
 
 如果需要可复现生成，再锁定指定版本：
@@ -162,7 +167,7 @@ uvx copier copy --trust `
 ```powershell
 uvx copier copy --trust --vcs-ref v0.2.1 `
   https://github.com/keyl0204/harness-template.git `
-  D:\codeProject\ai\harness-project
+  .
 ```
 
 版本 tag 建议保持语义版本格式，例如 `v0.2.1`、`v0.2.2`、`v0.3.0`。
@@ -197,7 +202,7 @@ uvx copier update --trust
 
 | 问题 | 原因 | 处理方式 |
 |---|---|---|
-| `Expected at least 2 positional arguments` | 缺少模板路径和目标项目路径 | 在命令最后补上两个路径 |
+| `Expected at least 2 positional arguments` | 缺少模板源和目标目录 | 在命令最后补上 `https://github.com/keyl0204/harness-template.git .` |
 | `Copying from template version None` | 使用的是本地非 Git tag 模板 | 本地验证时正常；正式使用建议从 Git tag 生成 |
 | `src refspec main does not match any` | 本地没有 `main` 分支 | 执行 `git branch -M main` 后再推送 |
 | GitHub 拒绝 workflow 文件 | PAT 缺少 `workflow` scope | 生成包含 `repo` 和 `workflow` 权限的新 token |

@@ -13,25 +13,30 @@ make dev
 make check
 ```
 
-## Copier 本地生成验证
+## Copier 生成到当前文件夹
 
-从本地模板生成项目时，命令最后必须提供两个位置参数：
+从模板生成项目时，命令最后必须提供两个位置参数：
 
 ```text
-模板路径 目标项目路径
+模板源 目标目录
 ```
+
+如果希望默认生成到当前文件夹，先进入目标目录，然后把目标目录写成 `.`。
 
 PowerShell 示例：
 
 ```powershell
+mkdir D:\codeProject\ai\harness-project
+cd D:\codeProject\ai\harness-project
+
 uvx copier copy --trust --defaults `
   -d project_name=harness-project `
   -d project_type=fastapi-react `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\harness-project
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
 如果目标目录已经存在，并且只是本地覆盖验证：
@@ -43,16 +48,17 @@ uvx copier copy --trust --defaults --force `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
-  D:\codeProject\ai\harness-template `
-  D:\codeProject\ai\harness-project
+  https://github.com/keyl0204/harness-template.git `
+  .
 ```
 
 注意：
 
 - PowerShell 每行末尾的反引号 `` ` `` 后面不能有空格。
 - `.` 表示当前目录。只有当前目录就是模板仓库时，才能把 `.` 当作模板路径。
-- 如果只写了 `-d use_docker=true`，但没有模板路径和目标路径，Copier 会报 `Expected at least 2 positional arguments`。
-- 本地模板会显示 `Copying from template version None`，这是正常现象，表示模板来源不是 Git tag。
+- 在这里，`.` 是目标目录，不是模板路径。
+- 如果只写了 `-d use_docker=true`，但没有模板源和目标目录，Copier 会报 `Expected at least 2 positional arguments`。
+- 使用 GitHub 模板源时，Copier 会自动选择最新稳定 tag。
 - 如果模板目录已经是 Git 仓库并且存在 tag，Copier 默认可能会使用最新 tag，而不是未提交的工作区内容。修改模板后要先 `git commit` 并打新 tag，或在验证命令中明确使用需要的 `--vcs-ref`。
 
 使用本地 Git 仓库当前 `HEAD` 验证：
@@ -128,13 +134,15 @@ git push origin v0.2.1
 之后新项目可以使用最新稳定 tag 生成。日常推荐不写 `--vcs-ref`，让 Copier 自动选择最新 tag：
 
 ```powershell
-uvx copier copy --trust https://github.com/keyl0204/harness-template.git my-project
+mkdir my-project
+cd my-project
+uvx copier copy --trust https://github.com/keyl0204/harness-template.git .
 ```
 
 如果需要可复现生成，再锁定指定版本：
 
 ```powershell
-uvx copier copy --trust --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git my-project
+uvx copier copy --trust --vcs-ref v0.2.1 https://github.com/keyl0204/harness-template.git .
 ```
 
 版本 tag 建议保持语义版本格式，例如 `v0.2.1`、`v0.2.2`、`v0.3.0`。
@@ -156,7 +164,7 @@ uvx copier update --trust
 
 | 现象 | 检查项 | 修复方式 |
 |---|---|---|
-| `Expected at least 2 positional arguments` | 是否缺少模板路径和目标项目路径 | 在命令最后补上 `模板路径 目标项目路径` |
+| `Expected at least 2 positional arguments` | 是否缺少模板源和目标目录 | 在命令最后补上 `https://github.com/keyl0204/harness-template.git .` |
 | `Copying from template version None` | 是否使用本地模板路径 | 本地验证时正常；需要版本号时从 Git tag 生成 |
 | 目标目录已存在 | 是否要覆盖本地验证结果 | 确认无重要改动后使用 `--force` |
 | PowerShell 进入 `>>` 多行续写 | 行尾反引号后是否有空格，或命令是否未写完 | 删除反引号后的空格，并补齐最后两个路径参数 |
