@@ -1,6 +1,6 @@
 {% if use_docker %}
 {% if project_type == "react" %}
-{% set node_pm = "npm" if frontend_package_manager == "none" else frontend_package_manager %}
+{% set node_pm = frontend_package_manager %}
 FROM node:{{ node_version }}-alpine
 
 WORKDIR /app

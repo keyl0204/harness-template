@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+{% if project_type == "react" and frontend_package_manager == "pnpm" %}
+  "packageManager": "pnpm@10.0.0",
+{% elif project_type == "react" and frontend_package_manager == "yarn" %}
+  "packageManager": "yarn@4.5.0",
+{% elif project_type == "react" and frontend_package_manager == "npm" %}
+  "packageManager": "npm@10.9.0",
+{% endif %}
   "scripts": {
 {% if project_type == "react" %}
     "dev": "vite",
@@ -11,11 +18,7 @@
     "test": "vitest run --passWithNoTests",
     "coverage": "vitest run --coverage",
     "build": "vite build",
-{% if frontend_package_manager != "none" %}
     "check": "{{ frontend_package_manager }} run lint && {{ frontend_package_manager }} run typecheck && {{ frontend_package_manager }} run test && {{ frontend_package_manager }} run build"
-{% else %}
-    "check": "echo 未配置前端包管理器"
-{% endif %}
 {% else %}
     "dev": "echo 未配置前端",
     "lint": "echo 未配置前端",

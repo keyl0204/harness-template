@@ -39,6 +39,10 @@ package_manager:
     - pip
     - none
   default: uv
+  validator: >-
+    {% if project_type != 'react' and package_manager == 'none' -%}
+    非 React 项目必须选择 uv 或 pip，不能选择 none；否则后端依赖、Docker 和 CI 无法可靠安装。
+    {%- endif %}
 
 frontend_package_manager:
   type: str
@@ -49,6 +53,10 @@ frontend_package_manager:
     - yarn
     - none
   default: pnpm
+  validator: >-
+    {% if project_type == 'react' and frontend_package_manager == 'none' -%}
+    React 项目必须选择 pnpm、npm 或 yarn，不能选择 none；否则前端验证会空跑。
+    {%- endif %}
 
 use_subagents:
   type: bool
@@ -122,5 +130,6 @@ _exclude:
   - "/task_plan.md"
   - "/findings.md"
   - "/progress.md"
+  - "/scripts/check-template.py"
   - "copier_harness_landing_plan.md"
   - "harness工程+子agent项目工程建设指导方案.md"

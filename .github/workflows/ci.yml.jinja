@@ -11,17 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "{{ python_version }}"
 {% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 {% if package_manager == "uv" %}
       - uses: astral-sh/setup-uv@v5
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "{{ python_version }}"
       - run: uv sync
 {% elif package_manager == "pip" %}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "{{ python_version }}"
       - run: pip install -r requirements.txt
 {% endif %}
 {% endif %}
