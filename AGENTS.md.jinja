@@ -22,6 +22,7 @@
 
 {% if use_subagents %}
 - 子 Agent 角色：`.harness/agents/`
+- 子 Agent 模型配置：`.harness/config/models.yml`
 {% endif %}
 {% if use_skills %}
 - Skills：`.harness/skills/`
@@ -42,7 +43,9 @@
 - rag-pipeline：`.harness/skills/rag-pipeline/SKILL.md`
 - workflow-orchestration：`.harness/skills/workflow-orchestration/SKILL.md`
 - multi-agent-system：`.harness/skills/multi-agent-system/SKILL.md`
+{% if use_security_rules %}
 - security-review：`.harness/skills/security-review/SKILL.md`
+{% endif %}
 - test-writing：`.harness/skills/test-writing/SKILL.md`
 - harness-review：`.harness/skills/harness-review/SKILL.md`
 
@@ -69,13 +72,23 @@
 1. 修改代码前，先判断任务类型并读取对应 Harness 工作流。
 2. 涉及业务行为时，读取相关 `docs/product/` 和 `docs/domain/` 文件。
 3. 涉及架构、API 或数据库行为时，读取相关 `docs/architecture/` 文件。
-4. 使用子 Agent 时，以 `.harness/agents/*.md` 的元数据作为角色、模型和推理强度配置来源。
+{% if use_subagents %}
+4. 使用子 Agent 时，优先以 `.harness/config/models.yml` 的 `model_profile` 映射决定模型和推理强度；`.harness/agents/*.md` 中的 `model` 和 `reasoning_effort` 作为兼容兜底。
 5. 不要把产品需求写进 `.harness/`。
 6. 不要把 Codex 工作规则写进 `docs/product/`。
 7. 避免无关重构。
 8. 避免不必要依赖。
 9. 完成任务前必须运行验证。
 10. 如果测试失败，继续修复，直到任务真正完成。
+{% else %}
+4. 未生成子 Agent 协议时，由当前 Codex 会话自行完成规划、实现、测试、审查和汇报。
+5. 不要把产品需求写进 `.harness/`。
+6. 不要把 Codex 工作规则写进 `docs/product/`。
+7. 避免无关重构。
+8. 避免不必要依赖。
+9. 完成任务前必须运行验证。
+10. 如果测试失败，继续修复，直到任务真正完成。
+{% endif %}
 
 ## 常用命令
 

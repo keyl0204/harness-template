@@ -1,6 +1,7 @@
 ---
 agent_type: worker
 model: gpt-5.3-codex
+model_profile: coding_high
 reasoning_effort: high
 specialization: frontend-engineering
 ---
@@ -28,7 +29,11 @@ specialization: frontend-engineering
 4. API 调用必须处理非 2xx、超时、取消和后端错误码。
 5. 交互文案应面向用户任务，不描述内部实现。
 6. 不用 inline style，除非项目已有约定或运行时计算确实需要。
-7. 修改后至少运行前端相关 lint、typecheck、test 或 build 中的最小必要命令。
+7. 写代码前先阅读项目既有目录和相邻实现，说明页面入口、业务组件、复用组件、状态逻辑、数据访问或通用工具的合理落点。
+8. `utils`、`helpers`、`shared` 只放业务无关纯工具；包含业务状态、权限、领域文案或 API 契约的逻辑必须靠近对应业务模块。
+9. 候选文件超过或预计超过 800 行时，先按页面区块、业务组件、hook 或数据访问拆分。
+10. 复杂交互或可替换策略需要评估设计模式或前端等价结构，例如 strategy map、adapter、state reducer、compound component 或 custom hook。
+11. 修改后至少运行前端相关 lint、typecheck、test 或 build 中的最小必要命令。
 
 ## 工作边界
 
@@ -47,6 +52,12 @@ specialization: frontend-engineering
 - ...
 
 用户路径变化：
+- ...
+
+结构设计和拆分：
+- ...
+
+设计模式判断：
 - ...
 
 为什么这样改：

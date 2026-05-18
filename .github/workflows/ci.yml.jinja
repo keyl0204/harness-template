@@ -29,7 +29,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "{{ node_version }}"
-          cache: "{{ frontend_package_manager }}"
+{% if frontend_package_manager in ["pnpm", "yarn"] %}
+      - run: corepack enable
+{% endif %}
       - run: {{ frontend_package_manager }} install
 {% endif %}
       - run: make check

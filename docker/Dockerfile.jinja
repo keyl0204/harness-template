@@ -1,4 +1,27 @@
 {% if use_docker %}
+{% if project_type == "react" %}
+{% set node_pm = "npm" if frontend_package_manager == "none" else frontend_package_manager %}
+FROM node:{{ node_version }}-alpine
+
+WORKDIR /app
+
+{% if node_pm in ["pnpm", "yarn"] %}
+RUN corepack enable
+{% endif %}
+
+COPY package.json ./
+RUN {{ node_pm }} install
+
+COPY index.html ./
+COPY vite.config.ts ./
+COPY tsconfig.json ./
+COPY eslint.config.js ./
+COPY src ./src
+
+EXPOSE 5173
+
+CMD ["{{ node_pm }}", "run", "dev", "--", "--host", "0.0.0.0"]
+{% else %}
 FROM python:{{ python_version }}-slim
 
 WORKDIR /app
@@ -23,5 +46,6 @@ EXPOSE 8000
 CMD ["uv", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 {% else %}
 CMD ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+{% endif %}
 {% endif %}
 {% endif %}

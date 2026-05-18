@@ -57,14 +57,20 @@ PowerShell 每行末尾的反引号后面不能有空格。缺少模板源和目
 
 ## Harness
 
-本项目内置 Harness + 子 Agent + Skills 工程结构：
+本项目内置 Harness 工程结构：
 
 - `AGENTS.md`：Codex 入口和文档路由地图
+{% if use_subagents %}
 - `.harness/agents/`：子 Agent 角色协议
+- `.harness/config/models.yml`：子 Agent 模型 profile 和兜底配置
+{% endif %}
+{% if use_skills %}
 - `.harness/skills/`：可复用任务技能
+{% endif %}
 - `.harness/workflows/`：标准任务工作流
 - `.harness/rules/`：AI 工程协作规则
 - `.harness/state/`：任务状态和交接记录
+- `.harness/scripts/harness-check.py`：Harness 引用、元数据和源码文件行数自检
 - `docs/`：产品、领域、架构、运维和 ADR 文档
 
 ## 验证
@@ -72,5 +78,7 @@ PowerShell 每行末尾的反引号后面不能有空格。缺少模板源和目
 ```bash
 make check
 ```
+
+`make check` 会先运行 Harness 自检，再执行当前项目类型对应的后端或前端验证。
 
 更多模板生成、Git 发布和升级命令见 `docs/operations/runbook.md`。

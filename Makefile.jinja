@@ -1,4 +1,4 @@
-.PHONY: setup dev lint format typecheck test coverage frontend-check backend-check security check
+.PHONY: setup dev lint format typecheck test coverage frontend-check backend-check security harness-check check
 
 PYTHON_PM := {{ package_manager }}
 FRONTEND_PM := {{ frontend_package_manager }}
@@ -22,8 +22,10 @@ dev:
 {% else %}
 	python -m uvicorn src.main:app --reload
 {% endif %}
-{% elif project_type == "react" %}
+{% elif project_type == "react" and frontend_package_manager != "none" %}
 	$(FRONTEND_PM) run dev
+{% elif project_type == "react" %}
+	@echo "未配置前端包管理器"
 {% else %}
 	@echo "请为当前项目配置 dev 命令"
 {% endif %}
@@ -96,7 +98,10 @@ frontend-check:
 
 backend-check: lint typecheck test
 
-check:
+harness-check:
+	python -B .harness/scripts/harness-check.py
+
+check: harness-check
 {% if project_type == "react" %}
 	$(MAKE) frontend-check
 {% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}

@@ -33,6 +33,15 @@ description: 设计、实现、修改或审查 multi-agent 系统、Agent 角色
 - Termination：停止条件、最大轮次、错误终止和人工接管。
 - Evaluation：任务完成率、工具正确率、安全拒绝、成本和延迟。
 
+## 结构设计和设计模式
+
+1. 按项目既有结构、agent role、tool、handoff、memory、orchestration 和 eval 设计落点，不把所有逻辑塞进一个 agents 大文件。
+2. 工具实现和工具 schema 职责清晰，业务工具不放进通用工具目录。
+3. 不同模型供应商、工具后端或外部 SDK 用 Adapter 隔离。
+4. 可替换的 agent 路由、handoff、tool selection 或 planning 策略用 Strategy 表达。
+5. Agent 构造和按配置选择模型/工具时可使用 Factory。
+6. 业务源码文件默认不超过 800 行；超过时按 role、tool、handoff 或 eval 拆分。
+
 ## 工作流程
 
 1. 明确用户任务是否真的需要多 agent；单 agent 足够时保持简单。
@@ -51,6 +60,7 @@ description: 设计、实现、修改或审查 multi-agent 系统、Agent 角色
 - Handoff 不传递超出下游 agent 职责所需的敏感上下文。
 - 必须有最大轮次、超时或其他终止保护。
 - 高风险动作必须有服务端校验、人工确认或审计。
+- 文件大小没有超过 800 行；超过时已按 agent role 或工具边界拆分。
 
 ## 测试和评估重点
 
@@ -87,6 +97,9 @@ Agent 设计：
 - ...
 
 安全边界：
+- ...
+
+结构设计和模式：
 - ...
 
 测试或评估：

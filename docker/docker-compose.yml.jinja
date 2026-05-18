@@ -5,7 +5,11 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     ports:
+{% if project_type == "react" %}
+      - "5173:5173"
+{% else %}
       - "8000:8000"
+{% endif %}
     environment:
       - ENV=local
 {% endif %}

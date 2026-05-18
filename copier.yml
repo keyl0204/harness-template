@@ -75,20 +75,6 @@ use_docker:
   help: 是否生成 Dockerfile 和 docker-compose 示例
   default: false
 
-harness_level:
-  type: str
-  help: Harness 成熟度等级
-  choices:
-    - L1
-    - L2
-    - L3
-  default: L2
-
-author_name:
-  type: str
-  help: 作者名称
-  default: kyle
-
 python_version:
   type: str
   help: Python 版本
@@ -106,7 +92,20 @@ _exclude:
   - "__pycache__"
   - "*.pyc"
   - ".DS_Store"
+  - "{% if project_type == 'react' %}pyproject.toml{% else %}__never_match__{% endif %}"
   - "{% if package_manager != 'pip' %}requirements.txt{% else %}__never_match__{% endif %}"
+  - "{% if project_type == 'react' %}src/__init__.py{% else %}__never_match__{% endif %}"
+  - "{% if project_type == 'react' %}src/main.py{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}package.json{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}index.html{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}vite.config.ts{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}tsconfig.json{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}eslint.config.js{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}src/App.tsx{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}src/main.tsx{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}src/styles.css{% else %}__never_match__{% endif %}"
+  - "{% if project_type != 'react' %}src/vite-env.d.ts{% else %}__never_match__{% endif %}"
+  - "{% if project_type == 'react' %}tests/test_smoke.py{% else %}__never_match__{% endif %}"
   - "{% if not use_subagents %}.harness/agents{% else %}__never_match__{% endif %}"
   - "{% if not use_subagents %}.harness/agents/**{% else %}__never_match__{% endif %}"
   - "{% if not use_skills %}.harness/skills{% else %}__never_match__{% endif %}"
@@ -115,6 +114,7 @@ _exclude:
   - "{% if not use_security_rules %}.harness/rules/security-rules.md{% else %}__never_match__{% endif %}"
   - "{% if not use_security_rules %}.harness/skills/security-review/SKILL.md{% else %}__never_match__{% endif %}"
   - "{% if not use_security_rules %}.harness/workflows/security-fix.md{% else %}__never_match__{% endif %}"
+  - "{% if not use_security_rules %}.harness/workflows/security-fix.md.jinja{% else %}__never_match__{% endif %}"
   - "{% if not use_ci %}.github{% else %}__never_match__{% endif %}"
   - "{% if not use_ci %}.github/**{% else %}__never_match__{% endif %}"
   - "{% if not use_docker %}docker{% else %}__never_match__{% endif %}"

@@ -1,6 +1,7 @@
 ---
 agent_type: explorer
 model: gpt-5.5
+model_profile: security_xhigh
 reasoning_effort: xhigh
 specialization: security-review
 ---

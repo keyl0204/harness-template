@@ -1,0 +1,60 @@
+# Central model profiles for Harness subagents.
+# Agent files keep explicit model fields as compatibility fallbacks.
+
+profiles:
+  planning_high:
+    model: gpt-5.5
+    reasoning_effort: high
+    use_for:
+      - requirement decomposition
+      - acceptance criteria
+      - risk planning
+
+  mapping_medium:
+    model: gpt-5.4
+    reasoning_effort: medium
+    use_for:
+      - codebase mapping
+      - dependency tracing
+      - impact analysis
+
+  coding_high:
+    model: gpt-5.3-codex
+    reasoning_effort: high
+    use_for:
+      - implementation
+      - focused refactors
+      - test writing
+
+  review_high:
+    model: gpt-5.5
+    reasoning_effort: high
+    use_for:
+      - code review
+      - regression analysis
+      - architecture checks
+
+  security_xhigh:
+    model: gpt-5.5
+    reasoning_effort: xhigh
+    use_for:
+      - security review
+      - authorization review
+      - sensitive operation review
+
+  reporting_low:
+    model: gpt-5.4-mini
+    reasoning_effort: low
+    use_for:
+      - delivery summaries
+      - status reports
+
+agent_defaults:
+  planner: planning_high
+  code_mapper: mapping_medium
+  backend_engineer: coding_high
+  frontend_engineer: coding_high
+  test_writer: coding_high
+  reviewer: review_high
+  security_reviewer: security_xhigh
+  reporter: reporting_low

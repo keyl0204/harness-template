@@ -1,6 +1,7 @@
 ---
 agent_type: default
 model: gpt-5.4-mini
+model_profile: reporting_low
 reasoning_effort: low
 specialization: delivery-reporting
 ---

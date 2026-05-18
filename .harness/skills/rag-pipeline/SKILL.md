@@ -35,6 +35,15 @@ description: 新增、修改、调试或评估 RAG 摄取、切分、embedding�
 - Generation：prompt、引用、拒答、空结果和错误处理。
 - Evaluation：golden set、召回率、引用准确性和失败样本。
 
+## 结构设计和设计模式
+
+1. 按 pipeline 阶段拆分模块，不把 loading、chunking、embedding、retrieval 和 generation 写进一个文件。
+2. 业务域过滤、权限过滤和租户规则放在承载业务规则的模块，不放入通用 vector 工具。
+3. 向量库、embedding provider、文档解析器和 LLM provider 差异用 Adapter 隔离。
+4. 可替换的 chunking、retrieval、reranking 或 context packing 策略用 Strategy 表达。
+5. pipeline 组装可使用 Factory 或 Builder，但不要隐藏关键参数和权限过滤。
+6. 业务源码文件默认不超过 800 行；超过时按 pipeline 阶段或业务能力拆分。
+
 ## 工作流程
 
 1. 明确变更影响的是摄取、索引、检索、上下文还是生成。
@@ -53,6 +62,7 @@ description: 新增、修改、调试或评估 RAG 摄取、切分、embedding�
 - LLM 输出不能直接作为权限、SQL、shell 或文件路径参数。
 - 检索过滤必须结构化，不拼接用户可控 DSL。
 - 评估要包含失败样本，不只验证 happy path。
+- 文件大小没有超过 800 行；超过时已按 pipeline 阶段拆分。
 
 ## 验证命令
 
@@ -77,6 +87,9 @@ RAG 阶段：
 - ...
 
 访问控制和来源：
+- ...
+
+结构设计和策略：
 - ...
 
 测试或评估：

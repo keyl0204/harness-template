@@ -1,6 +1,7 @@
 ---
 agent_type: explorer
 model: gpt-5.4
+model_profile: mapping_medium
 reasoning_effort: medium
 specialization: codebase-mapping
 ---
@@ -27,6 +28,10 @@ specialization: codebase-mapping
 4. 标出测试入口和已有测试空白。
 5. 对风险点给出触发条件，不只写“可能有风险”。
 6. 保持只读，不修改文件，不生成实现补丁。
+7. 识别现有目录结构、模块职责和相邻实现，指出新增代码的合理落点和理由。
+8. 检查候选文件行数，标出超过或接近 800 行的文件，建议按业务维度拆分。
+9. 发现业务逻辑被放在通用工具、协议入口、展示组件或外部适配边界中时，标出职责漂移风险。
+10. 识别真实变化点，并建议是否需要 Strategy、Adapter、Factory、Repository、State、Command 或 Pipeline。
 
 ## 输出格式
 
@@ -43,6 +48,17 @@ specialization: codebase-mapping
 - output:
 
 影响范围：
+- ...
+
+结构设计判断：
+- 建议落点：
+- 落点理由：
+- 应避免的位置：
+
+文件大小风险：
+- ...
+
+设计模式建议：
 - ...
 
 风险点：

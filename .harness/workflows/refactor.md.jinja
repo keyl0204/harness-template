@@ -6,13 +6,27 @@
 
 ## 流程
 
+{% if use_subagents %}
 1. `planner` 确认重构目标和不改变行为的边界。
 2. `code_mapper` 识别受影响代码和测试。
 3. Engineer 做小步机械修改。
+{% if use_skills %}
 4. 结构变化影响测试时，`test_writer` 读取 `.harness/skills/test-writing/SKILL.md` 更新等价覆盖。
+{% else %}
+4. 结构变化影响测试时，更新等价测试覆盖。
+{% endif %}
 5. `reviewer` 检查是否出现行为漂移。
 6. 运行 `make check`。
 7. `reporter` 说明改了什么，以及为什么行为应保持不变。
+{% else %}
+1. 确认重构目标和不改变行为的边界。
+2. 识别受影响代码和测试。
+3. 做小步机械修改。
+4. 结构变化影响测试时，更新等价测试覆盖。
+5. 检查是否出现行为漂移。
+6. 运行 `make check`。
+7. 说明改了什么，以及为什么行为应保持不变。
+{% endif %}
 
 ## 禁止
 

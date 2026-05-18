@@ -8,7 +8,7 @@
 ## 启动流程
 
 1. 先读取 `AGENTS.md`，确认项目类型、文件路由和完成标准。
-2. 判断任务类型：`feature`、`bugfix`、`refactor`、`security-fix`、`docs-update` 或 `ops`。
+2. 判断任务类型：`feature`、`bugfix`、`refactor`、{% if use_security_rules %}`security-fix`、{% endif %}`docs-update` 或 `ops`。
 3. 读取匹配的 `.harness/workflows/` 文件，按工作流组织步骤。
 4. 按影响面读取最小必要文档：
    - 业务行为：`docs/product/`、`docs/domain/`
@@ -16,16 +16,25 @@
    - 部署、配置、回滚：`docs/operations/`
 5. 修改前检查 `git status --short`，识别已有用户改动。
 
+{% if use_subagents %}
 ## 子 Agent 使用
 
 1. 只有任务能被清晰拆分时才使用子 Agent。
-2. 子 Agent 的角色、模型和推理强度以 `.harness/agents/*.md` 的元数据为准。
+2. 子 Agent 的角色以 `.harness/agents/*.md` 的元数据为准；模型和推理强度优先读取 `.harness/config/models.yml` 中的 `model_profile`，再回退到 agent 文件内的 `model` 和 `reasoning_effort`。
 3. `planner` 用于拆解需求和验收标准，不直接改代码。
 4. `code_mapper` 用于定位代码路径、调用链和风险，不直接改代码。
 5. `backend_engineer`、`frontend_engineer`、`test_writer` 可执行文件修改。
-6. `reviewer`、`security_reviewer` 必须保持审查视角，先列问题再给建议。
+6. `reviewer`{% if use_security_rules %}、`security_reviewer`{% endif %} 必须保持审查视角，先列问题再给建议。
 7. `reporter` 只在实现和验证完成后汇总事实，不补写未执行的验证结论。
+{% else %}
+## 角色协作
 
+1. 未生成子 Agent 协议时，由当前 Codex 会话自行承担规划、定位、实现、测试、审查和汇报职责。
+2. 仍然必须遵守 `.harness/rules/` 和 `.harness/workflows/` 的步骤要求。
+3. 需要并行或专门审查时，先向用户说明缺少子 Agent 协议造成的协作限制。
+{% endif %}
+
+{% if use_skills %}
 ## Skills 使用
 
 1. Skills 位于 `.harness/skills/*/SKILL.md`，用于提供可复用的专业执行方法。
@@ -36,10 +45,19 @@
 6. RAG 任务优先读取 `rag-pipeline`。
 7. workflow 编排任务优先读取 `workflow-orchestration`。
 8. multi-agent 任务优先读取 `multi-agent-system`。
+{% if use_security_rules %}
 9. 安全、权限、密钥、文件、网络、shell 或高风险操作优先读取 `security-review`。
+{% endif %}
 10. 文档同步任务优先读取 `docs-sync`。
 11. Harness 结构审查或模板升级优先读取 `harness-review`。
 12. Skill 只能指导执行方法，不能覆盖用户需求、项目文档或更具体的规则。
+{% else %}
+## Skills 使用
+
+1. 未生成 Skills 时，不引用 Skill 目录下的文件。
+2. 仍然按 `.harness/rules/` 和 `.harness/workflows/` 执行任务。
+3. 遇到专业任务时，直接把对应方法内化到当前执行计划中，并在最终报告中说明未使用 Skill 文件。
+{% endif %}
 
 ## 工作中
 
@@ -48,8 +66,9 @@
 3. 不把临时调试、实验脚本或生成产物混入最终提交，除非它们是交付物。
 4. 不新增依赖，除非现有代码和标准库无法合理完成目标。
 5. 不扩大公开 API、配置项、数据库 schema 或权限模型，除非任务明确需要。
-6. 修改行为、规则或架构时，同步更新对应文档。
-7. 对不确定的外部事实、库版本或安全要求，必须查证后再落地。
+6. 写代码前先基于项目既有结构做落点判断；Harness 不强制固定目录名，必须由当前项目上下文决定。
+7. 修改行为、规则或架构时，同步更新对应文档。
+8. 对不确定的外部事实、库版本或安全要求，必须查证后再落地。
 
 ## 完成前
 

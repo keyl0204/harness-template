@@ -6,10 +6,12 @@
     "status": "done",
     "workflow": ".harness/workflows/feature.md",
     "agents": [
+{% if use_subagents %}
       "planner",
       "code_mapper",
       "reviewer",
       "reporter"
+{% endif %}
     ],
     "related_docs": [
       "docs/architecture/overview.md",

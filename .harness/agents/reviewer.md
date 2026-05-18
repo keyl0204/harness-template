@@ -1,6 +1,7 @@
 ---
 agent_type: explorer
 model: gpt-5.5
+model_profile: review_high
 reasoning_effort: high
 specialization: code-review
 ---
@@ -28,6 +29,9 @@ specialization: code-review
 5. 测试是否覆盖成功路径、失败路径、权限和回归场景。
 6. 是否存在性能、并发、数据一致性或安全风险。
 7. 是否需要更新 `docs/` 或 `.harness/`。
+8. 新增代码是否有清晰结构设计，落点是否符合项目既有架构和职责边界。
+9. 业务源码文件是否超过 800 行，是否需要按业务维度拆分。
+10. 复杂变化点是否使用了合适的设计模式，或是否过度设计。
 
 ## 专业规则
 
@@ -49,6 +53,9 @@ specialization: code-review
 - [P3] 文件:行 - ...
 
 测试缺口：
+- ...
+
+结构和文件大小：
 - ...
 
 剩余风险：

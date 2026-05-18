@@ -6,13 +6,25 @@
 
 ## 流程
 
+{% if use_subagents %}
 1. `planner` 判断更新应属于 `.harness/` 还是 `docs/`。
+{% else %}
+1. 判断更新应属于 `.harness/` 还是 `docs/`。
+{% endif %}
+{% if use_skills %}
 2. 读取 `.harness/skills/docs-sync/SKILL.md`。
 3. 读取 `.harness/rules/doc-boundary-rules.md`。
+{% else %}
+2. 读取 `.harness/rules/doc-boundary-rules.md`。
+{% endif %}
 4. 只更新相关文档区域。
 5. 检查 `AGENTS.md` 中的引用是否仍指向有效文件。
 6. 可用时运行轻量验证，例如链接或路径检查。
+{% if use_subagents %}
 7. `reporter` 总结修改的文档。
+{% else %}
+7. 总结修改的文档。
+{% endif %}
 
 ## 边界
 

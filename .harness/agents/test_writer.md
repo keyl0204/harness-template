@@ -1,6 +1,7 @@
 ---
 agent_type: worker
 model: gpt-5.3-codex
+model_profile: coding_high
 reasoning_effort: high
 specialization: test-engineering
 ---

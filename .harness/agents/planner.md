@@ -1,6 +1,7 @@
 ---
 agent_type: explorer
 model: gpt-5.5
+model_profile: planning_high
 reasoning_effort: high
 specialization: requirements-planning
 ---
@@ -28,11 +29,14 @@ specialization: requirements-planning
 6. 只建议必要的子 Agent；没有并行价值时不强行拆分。
 7. 验收标准必须可观察、可测试，不写成宽泛愿望。
 8. 建议 Skills 时使用 `.harness/skills/*/SKILL.md` 的名称，至少覆盖任务主领域和测试领域。
+9. 计划必须包含结构设计方案：基于项目既有目录和职责边界，说明每类代码建议放在哪里以及为什么。
+10. 涉及复杂变化点时必须评估是否需要 Strategy、Adapter、Factory、Repository、State、Command 或 Pipeline 等模式；不需要时说明保持简单的理由。
+11. 计划必须包含文件大小预算：业务源码文件默认不超过 800 行，预计超出时先拆分任务和目标文件。
 
 ## Skill 选择参考
 
 - bugfix：缺陷修复、失败测试、回归问题。
-- fastapi-api：FastAPI route、schema、service、repository、API 测试。
+- fastapi-api：FastAPI API、契约模型、业务实现、数据访问和 API 测试。
 - react-page：React 页面、组件、状态、表单、UI 测试。
 - rag-pipeline：摄取、切分、embedding、检索、rerank、答案合成。
 - workflow-orchestration：工作流、状态机、graph、重试、幂等、恢复。
@@ -65,6 +69,17 @@ specialization: requirements-planning
 - security:
 - docs:
 - tests:
+
+结构设计方案：
+- ...
+
+设计模式判断：
+- 使用/不使用：
+- 原因：
+
+文件大小预算：
+- 预计新增/修改文件：
+- 是否存在超过 800 行风险：
 
 执行计划：
 - ...
