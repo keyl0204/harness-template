@@ -7,11 +7,12 @@
 ## 流程
 
 1. `planner` 判断更新应属于 `.harness/` 还是 `docs/`。
-2. 读取 `.harness/rules/doc-boundary-rules.md`。
-3. 只更新相关文档区域。
-4. 检查 `AGENTS.md` 中的引用是否仍指向有效文件。
-5. 可用时运行轻量验证，例如链接或路径检查。
-6. `reporter` 总结修改的文档。
+2. 读取 `.harness/skills/docs-sync/SKILL.md`。
+3. 读取 `.harness/rules/doc-boundary-rules.md`。
+4. 只更新相关文档区域。
+5. 检查 `AGENTS.md` 中的引用是否仍指向有效文件。
+6. 可用时运行轻量验证，例如链接或路径检查。
+7. `reporter` 总结修改的文档。
 
 ## 边界
 

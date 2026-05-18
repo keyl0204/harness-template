@@ -9,7 +9,7 @@
 1. `planner` 确认重构目标和不改变行为的边界。
 2. `code_mapper` 识别受影响代码和测试。
 3. Engineer 做小步机械修改。
-4. `test_writer` 只在结构变化需要时更新测试。
+4. 结构变化影响测试时，`test_writer` 读取 `.harness/skills/test-writing/SKILL.md` 更新等价覆盖。
 5. `reviewer` 检查是否出现行为漂移。
 6. 运行 `make check`。
 7. `reporter` 说明改了什么，以及为什么行为应保持不变。

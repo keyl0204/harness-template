@@ -7,12 +7,13 @@
 ## 流程
 
 1. `planner` 确认范围和验收标准。
-2. `code_mapper` 定位相关文件和影响范围。
-3. Engineer 做最小修复。
-4. `test_writer` 补回归测试。
-5. `reviewer` 检查副作用和缺失覆盖。
-6. 运行 `make check`。
-7. `reporter` 总结根因、改动和验证结果。
+2. 读取 `.harness/skills/bugfix/SKILL.md`，按根因分析和最小修复流程执行。
+3. `code_mapper` 定位相关文件和影响范围。
+4. Engineer 做最小修复。
+5. `test_writer` 使用 `.harness/skills/test-writing/SKILL.md` 补回归测试。
+6. `reviewer` 检查副作用和缺失覆盖。
+7. 运行 `make check`。
+8. `reporter` 总结根因、改动和验证结果。
 
 ## 禁止
 
