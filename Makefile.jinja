@@ -8,21 +8,17 @@ setup:
 	uv sync
 {% elif package_manager == "pip" %}
 	pip install -r requirements.txt
-{% elif package_manager == "poetry" %}
-	poetry install
 {% else %}
 	@echo "未配置 Python 包管理器"
 {% endif %}
-{% if project_type in ["react", "fastapi-react"] and frontend_package_manager != "none" %}
+{% if project_type == "react" and frontend_package_manager != "none" %}
 	$(FRONTEND_PM) install
 {% endif %}
 
 dev:
-{% if project_type in ["fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 {% if package_manager == "uv" %}
 	uv run uvicorn src.main:app --reload
-{% elif package_manager == "poetry" %}
-	poetry run uvicorn src.main:app --reload
 {% else %}
 	python -m uvicorn src.main:app --reload
 {% endif %}
@@ -33,13 +29,10 @@ dev:
 {% endif %}
 
 lint:
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run ruff check .
 	uv run ruff format --check .
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run ruff check .
-	poetry run ruff format --check .
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m ruff check .
 	python -m ruff format --check .
 {% else %}
@@ -47,62 +40,52 @@ lint:
 {% endif %}
 
 format:
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run ruff format .
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run ruff format .
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m ruff format .
 {% else %}
 	@echo "未配置 Python formatter"
 {% endif %}
 
 typecheck:
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run pyright
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run pyright
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m pyright
 {% else %}
 	@echo "未配置 Python typecheck"
 {% endif %}
 
 test:
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run pytest
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run pytest
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m pytest
 {% else %}
 	@echo "未配置 Python 测试"
 {% endif %}
 
 coverage:
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run pytest --cov=src --cov-report=term-missing
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run pytest --cov=src --cov-report=term-missing
-{% elif project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m pytest --cov=src --cov-report=term-missing
 {% else %}
 	@echo "未配置 Python coverage"
 {% endif %}
 
 security:
-{% if use_security_rules and project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "uv" %}
+{% if use_security_rules and project_type in ["fastapi", "rag", "workflow", "multi-agent"] and package_manager == "uv" %}
 	uv run bandit -r src
-{% elif use_security_rules and project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] and package_manager == "poetry" %}
-	poetry run bandit -r src
-{% elif use_security_rules and project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% elif use_security_rules and project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	python -m bandit -r src
 {% else %}
 	@echo "未配置安全扫描"
 {% endif %}
 
 frontend-check:
-{% if project_type in ["react", "fastapi-react"] and frontend_package_manager != "none" %}
+{% if project_type == "react" and frontend_package_manager != "none" %}
 	$(FRONTEND_PM) run lint
 	$(FRONTEND_PM) run typecheck
 	$(FRONTEND_PM) run test
@@ -114,12 +97,9 @@ frontend-check:
 backend-check: lint typecheck test
 
 check:
-{% if project_type == "fastapi-react" %}
-	$(MAKE) backend-check
+{% if project_type == "react" %}
 	$(MAKE) frontend-check
-{% elif project_type == "react" %}
-	$(MAKE) frontend-check
-{% elif project_type in ["python", "fastapi", "rag", "langgraph"] %}
+{% elif project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 	$(MAKE) backend-check
 {% else %}
 	@echo "请配置 check 命令"

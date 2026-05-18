@@ -6,14 +6,17 @@
 
 ## 后端
 
-{% if project_type in ["fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 - Python {{ python_version }}
 - FastAPI
-{% if project_type == "langgraph" %}
+{% if project_type == "workflow" %}
 - LangGraph
 {% endif %}
 {% if project_type == "rag" %}
 - RAG 管线组件由项目自行补充。
+{% endif %}
+{% if project_type == "multi-agent" %}
+- OpenAI Agents SDK
 {% endif %}
 {% else %}
 - 待补充。
@@ -21,7 +24,7 @@
 
 ## 前端
 
-{% if project_type in ["react", "fastapi-react"] %}
+{% if project_type == "react" %}
 - React
 - Vite
 - TypeScript

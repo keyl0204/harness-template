@@ -61,12 +61,12 @@
 
 ## 常用命令
 
-{% if project_type in ["python", "fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 - Python 代码检查：`make lint`
 - Python 类型检查：`make typecheck`
 - Python 测试：`make test`
 {% endif %}
-{% if project_type in ["react", "fastapi-react"] %}
+{% if project_type == "react" %}
 - 前端检查：`make frontend-check`
 {% endif %}
 - 完整验证：`make check`

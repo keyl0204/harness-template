@@ -31,7 +31,7 @@ cd D:\codeProject\ai\harness-project
 
 uvx copier copy --trust --defaults `
   -d project_name=harness-project `
-  -d project_type=fastapi-react `
+  -d project_type=fastapi `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
@@ -44,7 +44,7 @@ uvx copier copy --trust --defaults `
 ```powershell
 uvx copier copy --trust --defaults --force `
   -d project_name=harness-project `
-  -d project_type=fastapi-react `
+  -d project_type=fastapi `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `
@@ -66,7 +66,7 @@ uvx copier copy --trust --defaults --force `
 ```powershell
 uvx copier copy --trust --defaults --vcs-ref=HEAD `
   -d project_name=harness-project `
-  -d project_type=fastapi-react `
+  -d project_type=fastapi `
   -d package_manager=uv `
   -d frontend_package_manager=pnpm `
   -d use_docker=true `

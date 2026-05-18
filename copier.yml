@@ -24,13 +24,12 @@ project_type:
   type: str
   help: 项目类型
   choices:
-    - python
     - fastapi
-    - fastapi-react
     - react
     - rag
-    - langgraph
-  default: fastapi-react
+    - workflow
+    - multi-agent
+  default: fastapi
 
 package_manager:
   type: str
@@ -38,7 +37,6 @@ package_manager:
   choices:
     - uv
     - pip
-    - poetry
     - none
   default: uv
 

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-{% if project_type in ["react", "fastapi-react"] %}
+{% if project_type == "react" %}
     "dev": "vite",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -22,7 +22,7 @@
 {% endif %}
   },
   "dependencies": {
-{% if project_type in ["react", "fastapi-react"] %}
+{% if project_type == "react" %}
     "@vitejs/plugin-react": "^5.0.0",
     "vite": "^7.0.0",
     "react": "^19.0.0",
@@ -30,7 +30,7 @@
 {% endif %}
   },
   "devDependencies": {
-{% if project_type in ["react", "fastapi-react"] %}
+{% if project_type == "react" %}
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",

@@ -1,4 +1,4 @@
-{% if project_type in ["fastapi", "fastapi-react", "rag", "langgraph"] %}
+{% if project_type in ["fastapi", "rag", "workflow", "multi-agent"] %}
 from fastapi import FastAPI
 
 app = FastAPI(title="{{ project_name }}")
